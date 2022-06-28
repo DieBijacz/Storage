@@ -1,10 +1,17 @@
 import React, { useRef } from 'react'
 import { Card, Form, Button } from 'react-bootstrap'
+import { useAuth } from '../context/AuthContext'
 
-const SingUp = () => {
+const SignUp = () => {
   const emailRef = useRef()
   const passwordRef = useRef()
   const passwordConfirmationRef = useRef()
+  const { signup } = useAuth()
+
+  function handleSubmit(e) {
+    e.preventDefault()
+    signup(emailRef.current.value, passwordRef.current.value)
+  }
 
   return (
     <div className="w-100" style={{ maxWidth: '400px' }}>
@@ -35,4 +42,4 @@ const SingUp = () => {
   )
 }
 
-export default SingUp
+export default SignUp

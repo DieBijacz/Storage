@@ -1,10 +1,10 @@
 import React from 'react'
+import style from './loader.css'
 
 const Loader = () => {
   return (
     <div className='d-flex justify-content-center align-items-center' style={{ width: '100%', height: '100vh' }}>
-      <div style={{ width: '100px', height: '100px', border: '5px #333 solid', borderRadius: '50%' }}>
-
+      <div className='loader'>
       </div>
     </div>
   )

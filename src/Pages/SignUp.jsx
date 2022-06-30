@@ -8,7 +8,7 @@ const SignUp = () => {
   const emailRef = useRef()
   const passwordRef = useRef()
   const passwordConfirmationRef = useRef()
-  const { signup } = useAuth()
+  const { signup, currentUser } = useAuth()
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
@@ -24,12 +24,11 @@ const SignUp = () => {
       setError('')
       setLoading(true)
       await signup(emailRef.current.value, passwordRef.current.value) //signup returns promise
+      navigate('/')
     } catch (error) {
       setError('Failed to create an account')
     }
-
     setLoading(false)
-    navigate('/')
   }
 
   return (

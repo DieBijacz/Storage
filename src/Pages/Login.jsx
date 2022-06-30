@@ -17,13 +17,12 @@ const Login = () => {
     try {
       setError('')
       setLoading(true)
-      await login(emailRef.current.value, passwordRef.current.value)
 
+      await login(emailRef.current.value, passwordRef.current.value)
+      navigate('/dashboard')
     } catch (error) {
       setError('Failed to log in')
     }
-
-    // navigate('/dashboard')
   }
 
   return (

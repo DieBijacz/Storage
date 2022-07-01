@@ -15,9 +15,10 @@ const Dashboard = () => {
     setError('')
     try {
       setLoading(true)
-      // await logout()
+      await logout()
+      console.log('1')
 
-      // navigate('/login')
+      navigate('/login')
     } catch (error) {
       setError('Failed to logout')
     }

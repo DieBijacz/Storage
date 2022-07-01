@@ -22,6 +22,10 @@ const Login = () => {
       navigate('/dashboard')
     } catch (error) {
       setError('Failed to log in')
+      setTimeout(() => {
+        setError('')
+        setLoading(false)
+      }, 2000)
     }
   }
 

@@ -6,6 +6,7 @@ import Login from '../Pages/Login';
 import Home from '../Pages/Home';
 import PrivateRoute from './PrivateRoute';
 import Navibar from './Navibar';
+import ForgotPassword from '../Pages/ForgotPassword';
 
 function App() {
   return (
@@ -14,13 +15,10 @@ function App() {
       <AuthProvider>
         <Routes>
           <Route path='/' element={<Home />} />
-          <Route path='/dashboard' element={
-            <PrivateRoute>
-              <Dashboard />
-            </PrivateRoute>
-          } />
+          <Route path='/dashboard' element={<PrivateRoute><Dashboard /></PrivateRoute>} />
           <Route path='/signup' element={<SignUp />} />
           <Route path='/login' element={<Login />} />
+          <Route path='/forgot-password' element={<ForgotPassword />} />
         </Routes>
       </AuthProvider>
     </Router>

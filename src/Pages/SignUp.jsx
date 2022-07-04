@@ -8,7 +8,7 @@ const SignUp = () => {
   const emailRef = useRef()
   const passwordRef = useRef()
   const passwordConfirmationRef = useRef()
-  const { signup, currentUser } = useAuth()
+  const { signup } = useAuth()
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
@@ -17,6 +17,9 @@ const SignUp = () => {
 
     if (passwordRef.current.value !== passwordConfirmationRef.current.value) {
       setError("Password doesn't match")
+      setTimeout(() => {
+        setError('')
+      }, 2000)
       return
     }
 
@@ -27,6 +30,10 @@ const SignUp = () => {
       navigate('/')
     } catch (error) {
       setError('Failed to create an account')
+      setLoading(false)
+      setTimeout(() => {
+        setError('')
+      }, 2000)
     }
     setLoading(false)
   }

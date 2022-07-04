@@ -30,33 +30,31 @@ const Login = () => {
   }
 
   return (
-    <Container className="d-flex align-items-center justify-content-center" style={{ minHeight: '100vh' }}>
-      <div className="w-100" style={{ maxWidth: '400px' }}>
-        <Card >
-          <Card.Body>
-            {error && <Alert variant='danger'>{error}</Alert>}
-            <h2 className='text-center mb-4'>Log In</h2>
-            <Form onSubmit={handleSubmit}>
-              <Form.Group id='email'>
-                <Form.Label>Email</Form.Label>
-                <Form.Control type='email' required ref={emailRef}></Form.Control>
-              </Form.Group>
-              <Form.Group id='password'>
-                <Form.Label>Password</Form.Label>
-                <Form.Control type='password' required ref={passwordRef}></Form.Control>
-              </Form.Group>
-              <Button disabled={loading} type='submit' className='w-100 mt-4'>Log In</Button>
-            </Form>
-          </Card.Body>
-          <div className="w-100 text-center mb-2">
-            <Link to='/forgot-password' style={{ textDecoration: 'none' }}>Forgot Password?</Link>
-          </div>
-        </Card>
-        <div className="w-100 text-center mt-2">
-          <Link to='/signup' style={{ textDecoration: 'none' }}>Create Account</Link>
+    <div className="w-100" style={{ maxWidth: '400px' }}>
+      <Card >
+        <Card.Body>
+          {error && <Alert variant='danger'>{error}</Alert>}
+          <h2 className='text-center mb-4'>Log In</h2>
+          <Form onSubmit={handleSubmit}>
+            <Form.Group id='email'>
+              <Form.Label>Email</Form.Label>
+              <Form.Control type='email' required ref={emailRef}></Form.Control>
+            </Form.Group>
+            <Form.Group id='password'>
+              <Form.Label>Password</Form.Label>
+              <Form.Control type='password' required ref={passwordRef}></Form.Control>
+            </Form.Group>
+            <Button disabled={loading} type='submit' className='w-100 mt-4'>Log In</Button>
+          </Form>
+        </Card.Body>
+        <div className="w-100 text-center mb-2">
+          <Link to='/forgot-password' style={{ textDecoration: 'none' }}>Forgot Password?</Link>
         </div>
+      </Card>
+      <div className="w-100 text-center mt-2">
+        <Link to='/signup' style={{ textDecoration: 'none' }}>Create Account</Link>
       </div>
-    </Container>
+    </div>
   )
 }
 

@@ -8,6 +8,7 @@ import PrivateRoute from './PrivateRoute';
 import Navibar from './Navibar';
 import ForgotPassword from '../Pages/ForgotPassword';
 import { Container } from 'react-bootstrap';
+import NotFound from '../Pages/NotFound';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route path='/signup' element={<SignUp />} />
             <Route path='/login' element={<Login />} />
             <Route path='/forgot-password' element={<ForgotPassword />} />
+            <Route path='*' element={<NotFound />} />
           </Routes>
         </AuthProvider>
       </Container>

@@ -94,37 +94,43 @@ const Dashboard = () => {
       {message && <Alert variant='success'>{message}</Alert>}
 
       <Container>
-        <div className="top">
-          <div className='d-flex justify-content-between align-items-center my-3'>
-            <div>
-              <h1 className='mb-0'>Dashboard</h1>
-              <p className='mb-0'>{currentUser.email}<span className='text-muted'>- {currentUser.emailVerified ? 'verified' : 'not verified'}</span></p>
-            </div>
-            <Button disabled={loading} onClick={handleLogout} variant='outline-primary'>{loading ? 'Loading...' : 'Log Out'}</Button>
+        <div className='d-flex justify-content-between align-items-center my-3'>
+          <div>
+            <h1 className='mb-0'>Dashboard</h1>
+            <p className='mb-0'>{currentUser.email}<span className='text-muted'>- {currentUser.emailVerified ? 'verified' : 'not verified'}</span></p>
+          </div>
+          <div>
+            <Button onClick={() => setDisplayProfileDetails(prev => prev === false ? true : false)}>{displayProfileDetais ? 'Hide details' : 'Update profile'}</Button>
+            <Button className='ms-2' disabled={loading} onClick={handleLogout} variant='outline-primary'>{loading ? 'Loading...' : 'Log Out'}</Button>
           </div>
         </div>
-        <Button onClick={() => setDisplayProfileDetails(prev => prev === false ? true : false)}>{displayProfileDetais ? 'Hide details' : 'Update profile'}</Button>
-        {displayProfileDetais && <Card className='m-3' style={{ maxWidth: '400px' }}>
-          <Card.Header><h4>Profile Details</h4></Card.Header>
-          <Card.Body>
-            {updateErorr && <Alert variant='danger'>{updateErorr}</Alert>}
-            <Form onSubmit={handleSubmit}>
-              <Form.Group id='email'>
-                <Form.Label>New Email</Form.Label>
-                <Form.Control type='email' defaultValue={currentUser.email} ref={emailRef}></Form.Control>
-              </Form.Group>
-              <Form.Group id='password'>
-                <Form.Label>New Password</Form.Label>
-                <Form.Control type='password' placeholder='Leave blank to keep the same password' ref={passwordRef}></Form.Control>
-              </Form.Group>
-              <Form.Group id='passwordConfirm'>
-                <Form.Label>Confirm New Password</Form.Label>
-                <Form.Control type='password' ref={passwordConfirmRef}></Form.Control>
-              </Form.Group>
-              <Button disabled={loading} type='submit' className='w-100 mt-4'>Update Profile</Button>
-            </Form>
-          </Card.Body>
-        </Card>}
+        <div>
+          {displayProfileDetais && (
+            <div className='w-100% d-flex justify-content-end'>
+              <Card className='m-3' style={{ width: 'calc(min(600px, 90%))' }}>
+                <Card.Header><h4>Profile Details</h4></Card.Header>
+                <Card.Body>
+                  {updateErorr && <Alert variant='danger'>{updateErorr}</Alert>}
+                  <Form onSubmit={handleSubmit}>
+                    <Form.Group id='email'>
+                      <Form.Label>New Email</Form.Label>
+                      <Form.Control type='email' defaultValue={currentUser.email} ref={emailRef}></Form.Control>
+                    </Form.Group>
+                    <Form.Group id='password'>
+                      <Form.Label>New Password</Form.Label>
+                      <Form.Control type='password' placeholder='Leave blank to keep the same password' ref={passwordRef}></Form.Control>
+                    </Form.Group>
+                    <Form.Group id='passwordConfirm'>
+                      <Form.Label>Confirm New Password</Form.Label>
+                      <Form.Control type='password' ref={passwordConfirmRef}></Form.Control>
+                    </Form.Group>
+                    <Button disabled={loading} type='submit' className='w-100 mt-4'>Update Profile</Button>
+                  </Form>
+                </Card.Body>
+              </Card>
+            </div>
+          )}
+        </div>
       </Container>
     </>
   )

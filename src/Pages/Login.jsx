@@ -30,8 +30,8 @@ const Login = () => {
   }
 
   return (
-    <div className="w-100" style={{ maxWidth: '400px' }}>
-      <Card >
+    <Container className="w-100 d-flex-column justify-content-center">
+      <Card style={{ maxWidth: '400px', margin: 'auto' }}>
         <Card.Body>
           {error && <Alert variant='danger'>{error}</Alert>}
           <h2 className='text-center mb-4'>Log In</h2>
@@ -54,7 +54,7 @@ const Login = () => {
       <div className="w-100 text-center mt-2">
         <Link to='/signup' style={{ textDecoration: 'none' }}>Create Account</Link>
       </div>
-    </div>
+    </Container>
   )
 }
 

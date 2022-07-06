@@ -1,11 +1,29 @@
 import React from 'react'
+import { Container, Nav, Navbar } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 
 const Navibar = () => {
+  const { currentUser } = useAuth()
+
   return (
-    <div className='w-100 d-flex align-items-center' style={{ height: '10vh' }}>
-      <Link to='/' style={{ textDecoration: 'none', color: 'black' }}>Back to Home</Link>
-    </div>
+    <Navbar bg='light' style={{ height: '7vh' }} className='mb-3'>
+      <Container>
+        <Navbar.Brand as={Link} to='/'>MasStorage</Navbar.Brand>
+        <Nav>
+          <Nav>
+            {currentUser ?
+              <>
+                <Nav.Link as={Link} to='/profile'>Profile</Nav.Link>
+                <Nav.Link as={Link} to='/dashboard'>Dashboard</Nav.Link>
+              </>
+              :
+              <Nav.Link as={Link} to='/login' style={{ textDecoration: 'none', color: 'black' }}>Login</Nav.Link>
+            }
+          </Nav>
+        </Nav>
+      </Container>
+    </Navbar>
   )
 }
 

@@ -1,18 +1,13 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Container } from 'react-bootstrap'
 import { useAuth } from '../context/AuthContext'
 
 const Home = () => {
   const { currentUser } = useAuth()
   return (
-    <>
+    <Container>
       <h2>Home Page</h2>
-      {currentUser ?
-        <Link to='/dashboard'>Dashboard</Link>
-        :
-        <Link to='/login'>Go To Login</Link>
-      }
-    </>
+    </Container>
   )
 }
 

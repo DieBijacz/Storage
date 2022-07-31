@@ -4,7 +4,8 @@ import useFolder from '../hooks/useFolder'
 import AddFolderButton from '../storage/AddFolderButton'
 
 const Dashboard = () => {
-  const { folder } = useFolder()
+  const { folder } = useFolder('Xs2MeDr3LsfAPtw4zTZE')
+  console.log(folder)
 
   return (
     <Container fluid>

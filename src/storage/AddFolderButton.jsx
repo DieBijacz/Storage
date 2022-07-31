@@ -53,7 +53,7 @@ const AddFolderButton = ({ currentFolder }) => {
                   <FontAwesomeIcon icon={faTimes} size='sm' />
                 </Button>
               </div>
-              <Form.Control onFocus={() => setName('')} type='text' required value={name} onChange={(e) => setName(e.target.value)} />
+              <Form.Control autoFocus={true} onFocus={() => setName('')} type='text' required value={name} onChange={(e) => setName(e.target.value)} />
             </FormGroup>
           </Modal.Body>
           <Modal.Footer>

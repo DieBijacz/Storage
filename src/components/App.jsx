@@ -7,7 +7,6 @@ import Home from '../Pages/Home';
 import PrivateRoute from './PrivateRoute';
 import Navibar from './Navibar';
 import ForgotPassword from '../Pages/ForgotPassword';
-import { Container } from 'react-bootstrap';
 import NotFound from '../Pages/NotFound';
 import Dashboard from '../Pages/Dashboard';
 
@@ -18,6 +17,7 @@ function App() {
         <Navibar />
         <Routes>
           <Route path='/' element={<Home />} />
+          <Route path='/folder/:folderId' element={<Dashboard />} />
           <Route path='/signup' element={<SignUp />} />
           <Route path='/login' element={<Login />} />
           <Route path='/dashboard' element={<PrivateRoute><Dashboard /></PrivateRoute>} />

@@ -7,7 +7,7 @@ const Navibar = () => {
   const { currentUser } = useAuth()
 
   return (
-    <Navbar bg='light' style={{ height: '7vh' }} className='mb-3'>
+    <Navbar bg='light' style={{ height: '50px' }} className='mb-3'>
       <Container>
         <Navbar.Brand as={Link} to='/'>MasStorage</Navbar.Brand>
         <Nav>

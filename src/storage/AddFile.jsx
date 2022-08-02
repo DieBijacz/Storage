@@ -5,8 +5,7 @@ import { faFileUpload } from '@fortawesome/free-solid-svg-icons'
 import { storage } from '../firebase'
 import { ref, uploadBytes } from 'firebase/storage'
 import { useAuth } from '../context/AuthContext'
-import { useEffect } from 'react'
-import { Button, Form, FormGroup, Modal } from 'react-bootstrap'
+import { Button, Form, Modal } from 'react-bootstrap'
 
 const AddFile = ({ currentFolder }) => {
   const { currentUser } = useAuth()
@@ -23,12 +22,19 @@ const AddFile = ({ currentFolder }) => {
     setFileForUpload(null)
   }
 
+  console.log(fileForUpload)
+
   function handleSubmit() {
     // validate input
     if (currentFolder == null || fileForUpload == null) return
 
-    // create Reference to my firebase storage and path
-    const storageRef = ref(storage, `uploaded files/${currentUser.uid}/`)
+    // create path to file based on folders
+    const filePath = currentFolder.path.length > 0
+      ? `${currentFolder.path.reduce((acc, path) => acc += `${path.name}/`, '')}/${currentFolder.name}/${fileForUpload.name}`
+      : fileForUpload.name
+
+    // files / user id / file path
+    const storageRef = ref(storage, `files/${currentUser.uid}/${filePath}/`)
 
     // upload
     uploadBytes(storageRef, fileForUpload).then(() => {
@@ -48,10 +54,16 @@ const AddFile = ({ currentFolder }) => {
         <Form onSubmit={handleSubmit}>
           <Modal.Body>
             <Form.Group>
-              {fileForUpload?.name}
+              {fileForUpload &&
+                <div className='d-flex justify-content-between align-items-center'>
+                  <p>{fileForUpload?.name}</p>
+                  <p className='text-muted'>{fileForUpload.size}B</p>
+                </div>
+              }
             </Form.Group>
           </Modal.Body>
           <Modal.Footer>
+            <Button variant='outline-dark' onClick={() => closeModal()}>Cancel</Button>
             <Button type='submit' variant='success'>Add File</Button>
           </Modal.Footer>
         </Form>

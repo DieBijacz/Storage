@@ -1,46 +1,71 @@
 import React from 'react'
-import { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFileUpload } from '@fortawesome/free-solid-svg-icons'
-import { storage } from '../firebase'
-import { ref, uploadBytes } from 'firebase/storage'
+import { storage, database } from '../firebase'
+import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage'
 import { useAuth } from '../context/AuthContext'
-import { Button, Form, Modal } from 'react-bootstrap'
 
 const AddFile = ({ currentFolder }) => {
   const { currentUser } = useAuth()
-  const [fileForUpload, setFileForUpload] = useState(null)
-  const [open, setOpen] = useState(false)
 
-  // MODAL
-  function openModal(e) {
-    setFileForUpload(e.target.files[0])
-    setOpen(true)
-  }
-  function closeModal() {
-    setOpen(false)
-    setFileForUpload(null)
-  }
-
-  console.log(fileForUpload)
-
-  function handleSubmit() {
+  // SUBMIT UPLOAD FILE
+  function handleSubmit(e) {
+    const file = e.target.files[0]
     // validate input
-    if (currentFolder == null || fileForUpload == null) return
+    if (currentFolder == null || file == null) return
 
     // create path to file based on folders
     const filePath = currentFolder.path.length > 0
-      ? `${currentFolder.path.reduce((acc, path) => acc += `${path.name}/`, '')}/${currentFolder.name}/${fileForUpload.name}`
-      : fileForUpload.name
+      ? `${currentFolder.path.reduce((acc, path) => acc += `${path.name}/`, '')}${currentFolder.name}/${file.name}`
+      : file.name
 
-    // files / user id / file path
+    // REFERENCE files / user id / file path
     const storageRef = ref(storage, `files/${currentUser.uid}/${filePath}/`)
 
     // upload
-    uploadBytes(storageRef, fileForUpload).then(() => {
-      alert('File Uploaded')
-      setFileForUpload(null)
-    }).catch(error => console.log(error))
+    const uploadTask = uploadBytesResumable(storageRef, file)
+
+    uploadTask.on('state_changed',
+      (snapshot) => {
+        // const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        // console.log('Upload is ' + progress + '% done');
+        // switch (snapshot.state) {
+        //   case 'paused':
+        //     console.log('Upload is paused');
+        //     break;
+        //   case 'running':
+        //     console.log('Upload is running');
+        //     break;
+        // }
+      },
+      (error) => {
+        switch (error.code) {
+          case 'storage/unauthorized':
+            console.log('unauthorized')
+            break;
+          case 'storage/canceled':
+            console.log('canceled')
+            break;
+          case 'storage/unknown':
+            console.log('unknown')
+            break;
+        }
+      },
+      () => {
+        // After uploading file to firebase storage
+        // Create object with refrence to that file and add it to database
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          console.log('uploaded')
+          database.files.add({
+            url: downloadURL,
+            name: file.name,
+            createdAt: new Date(),
+            folderId: currentFolder.id,
+            userId: currentUser.uid
+          })
+        });
+      }
+    );
   }
 
   return (
@@ -48,26 +73,8 @@ const AddFile = ({ currentFolder }) => {
       <label className='btn btn-outline-success m-0 me-2'>
         Add File
         <FontAwesomeIcon icon={faFileUpload} className='ms-2' />
-        <input type='file' onChange={(e) => openModal(e)} style={{ opacity: 0, position: 'absolute', left: '-9999px' }} />
+        <input type='file' onChange={(e) => handleSubmit(e)} style={{ opacity: 0, position: 'absolute', left: '-9999px' }} />
       </label>
-      <Modal show={open} onHide={closeModal}>
-        <Form onSubmit={handleSubmit}>
-          <Modal.Body>
-            <Form.Group>
-              {fileForUpload &&
-                <div className='d-flex justify-content-between align-items-center'>
-                  <p>{fileForUpload?.name}</p>
-                  <p className='text-muted'>{fileForUpload.size}B</p>
-                </div>
-              }
-            </Form.Group>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant='outline-dark' onClick={() => closeModal()}>Cancel</Button>
-            <Button type='submit' variant='success'>Add File</Button>
-          </Modal.Footer>
-        </Form>
-      </Modal>
     </div>
   )
 }

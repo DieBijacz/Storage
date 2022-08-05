@@ -5,7 +5,8 @@ import { database } from '../firebase'
 const ACTIONS = {
   SELECT_FOLDER: 'select-folder',
   UPDATE_FOLDER: 'update-folder',
-  SET_CHILD_FOLDERS: 'set-child-folders'
+  SET_CHILD_FOLDERS: 'set-child-folders',
+  SET_CHILD_FILES: 'set-child-files'
 }
 
 export const ROOT_FOLDER = {
@@ -33,6 +34,12 @@ function reducer(state, { type, payload }) {
         ...state,
         childFolders: payload.childFolders
       }
+    case ACTIONS.SET_CHILD_FILES:
+      return {
+        ...state,
+        childFiles: payload.childFiles
+      }
+
 
     default:
       return state
@@ -76,19 +83,34 @@ const useFolder = (folderId = null, folder = null) => {
 
   }, [folderId])
 
+  // FOLDERS
   useEffect(() => {
     return database.folders
       .where("parentId", "==", folderId) //check parent folder
       .where("userId", "==", currentUser.uid) //check user
       .orderBy("createdAt") //format in order
-      .onSnapshot(snaphot => { //update folders when they change
+      .onSnapshot(snapshot => { //trigers update folders when they change
         dispatch({
           type: ACTIONS.SET_CHILD_FOLDERS,
-          payload: { childFolders: snaphot.docs.map(database.formatDoc) }
+          payload: { childFolders: snapshot.docs.map(database.formatDoc) }
         })
       })
   }, [folderId, currentUser])
 
+  // FILES
+  useEffect(() => {
+    return database.files
+      .where("folderId", "==", folderId) //check folder
+      .where("userId", "==", currentUser.uid) //check user
+      .orderBy("createdAt") //format in order
+      .onSnapshot(snapshot => { //trigers update files when they change
+        dispatch({
+          type: ACTIONS.SET_CHILD_FILES,
+          payload: { childFiles: snapshot.docs.map(database.formatDoc) }
+        })
+        console.log({ childFiles: snapshot.docs.map(database.formatDoc) })
+      })
+  }, [folderId, currentUser])
   return state
 }
 

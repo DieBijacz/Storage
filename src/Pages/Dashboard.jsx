@@ -6,10 +6,11 @@ import AddFolderButton from '../storage/AddFolderButton'
 import AddFile from '../storage/AddFile'
 import { useParams, Link } from 'react-router-dom'
 import FolderBreadCrumbs from '../components/FolderBreadCrumbs'
+import File from '../components/File'
 
 const Dashboard = () => {
   const { folderId } = useParams() // get current folder which is open in dashboard
-  const { folder, childFolders } = useFolder(folderId)
+  const { folder, childFolders, childFiles } = useFolder(folderId)
 
   return (
     <Container fluid>
@@ -29,6 +30,18 @@ const Dashboard = () => {
             {childFolders.map(childFolder => (
               <div key={childFolder.id} style={{ maxWidth: '200px' }} className='me-2'>
                 <Folder folder={childFolder} />
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+      {childFolders.length > 0 && childFiles.length > 0 && <hr />}
+      <div className='d-flex justify-content-between align-items-center'>
+        {childFiles.length > 0 && (
+          <div className='d-flex flex-wrap'>
+            {childFiles.map(childFile => (
+              <div key={childFile.id} style={{ maxWidth: '200px' }} className='me-2'>
+                <File file={childFile} />
               </div>
             ))}
           </div>

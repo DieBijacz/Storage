@@ -2,7 +2,7 @@ import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFileUpload } from '@fortawesome/free-solid-svg-icons'
 import { storage, database } from '../firebase'
-import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage'
+import { ref, getDownloadURL, uploadBytesResumable, serverTimestamp } from 'firebase/storage'
 import { useAuth } from '../context/AuthContext'
 
 const AddFile = ({ currentFolder }) => {

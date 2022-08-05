@@ -61,14 +61,29 @@ const AddFile = ({ currentFolder }) => {
       () => {
         // Create object with refrence to that file and add it to database
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          console.log('uploaded')
-          database.files.add({
-            url: downloadURL,
-            name: file.name,
-            createdAt: new Date(),
-            folderId: currentFolder.id,
-            userId: currentUser.uid
-          })
+          // check if that file is already in db
+          database.files
+            // validate if can get something
+            .where('name', '==', file.name)
+            .where('userId', '==', currentUser.uid)
+            .where('folderId', '==', currentFolder.id)
+            .get()
+            // if there is then update url
+            .then(existingFiles => {
+              const existingFile = existingFiles.docs[0]
+              if (existingFile) {
+                existingFile.ref.update({ url: downloadURL })
+              } else {
+                // add new file
+                database.files.add({
+                  url: downloadURL,
+                  name: file.name,
+                  createdAt: new Date(),
+                  folderId: currentFolder.id,
+                  userId: currentUser.uid
+                })
+              }
+            })
         });
         setUploadingFiles(prev => {
           return prev.filter(file => file.id != id)
